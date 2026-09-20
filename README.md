@@ -2,11 +2,20 @@
 
 Automated enterprise network security lab built for GNS3. The project uses Python scripts to create a multi-zone network topology, deploy GNS3 nodes and links, generate Cisco IOS/IOSvL2 configurations, configure Ubuntu-based infrastructure services, and run validation checks.
 
-This lab is intended for learning, testing, and portfolio demonstration. It should not be applied directly to a production network without review and adaptation.
+## Project Highlights
+
+- End-to-end GNS3 lab build with Python-based topology automation.
+- Enterprise-style segmentation with user, server, voice, printer, guest, DMZ, management, monitoring, backup, identity, security, load balancer, database, and authentication/NTP VLANs.
+- Redundant edge and core design with dual ISP routers, dual edge routers, dual pfSense firewalls, dual core switches, and EtherChannel links.
+- Cisco IOS/IOSvL2 configuration generation for switch hardening, trunking, STP, DHCP snooping, Dynamic ARP Inspection, port security, SNMPv3, syslog, NTP, and SSH-only management.
+- Ubuntu service automation for static networking, BIND9 DNS, Samba Active Directory domain controllers, Chrony NTP, ISC DHCP, and validation tests.
+- pfSense lab documentation for interface mapping, WAN gateways, network aliases, service aliases, monitoring rules, and DNS validation.
 
 ## Overview
 
 The lab models a small enterprise environment with redundant WAN edges, dual firewalls, a core/access/server switching layer, DMZ services, management services, monitoring, logging, IDS components, and segmented client networks.
+
+![Enterprise Network Security Lab GNS3 topology](images/enterprise-lab-gns3-topology.png)
 
 Current topology data includes:
 
@@ -29,6 +38,80 @@ Main network areas:
 - **Server Layer:** application, database, identity, DHCP, DNS, authentication, NTP, monitoring, and security services.
 - **DMZ:** public web, WAF/load balancer, public DNS, and VPN gateway nodes.
 - **Management:** NetBox, jumpbox, config backup, backup, admin, and helpdesk systems.
+
+## Firewall Lab Data
+
+The pfSense screenshots in `images/` document the firewall state used in the lab.
+
+| Firewall | Interface role | Interface | Address shown in lab |
+| --- | --- | --- | --- |
+| FW1 | WAN1_EDGE_R1 | em0 | 172.16.11.2/30 |
+| FW1 | LAN | em5 | 192.168.99.1/24 |
+| FW1 | SYNC | em1 | 172.16.250.1/30 |
+| FW1 | INTERNAL_TRUNK | em2 | VLAN trunk |
+| FW1 | DMZ_TRUNK | em3 | VLAN trunk |
+| FW1 | WAN2_EDGE_R2 | em4 | 172.16.12.2/30 |
+| FW2 | WAN | em0 | 172.16.20.2/30 |
+| FW2 | LAN | em5 | 192.168.98.1/24 |
+| FW2 | SYNC | em1 | 172.16.250.2/30 |
+| FW2 | INTERNAL_TRUNK | em2 | VLAN trunk |
+| FW2 | DMZ_TRUNK | em3 | VLAN trunk |
+| FW2 | WAN2_EDGE_R1 | em4 | 172.16.11.2/30 |
+
+Firewall object data includes network aliases for the 10.10.x enterprise VLAN plan, including user, voice, printer, IoT camera, guest, management, monitoring, backup, DMZ, identity, security/IDS, load balancer, database, admin, and authentication/NTP networks.
+
+Service aliases cover common enterprise/security ports, including DNS, DHCP, NTP, SSH, RDP, web, database, syslog, NetFlow, RADIUS, TACACS, Prometheus, Grafana, Zabbix, Wazuh, Graylog, and backup traffic.
+
+Firewall rules shown in the lab include SNMP access from monitoring servers to pfSense, and DNS validation confirms resolver access for external package repositories.
+
+Additional firewall/router validation screenshots document:
+
+- pfSense WAN/LAN status with WAN `172.16.10.2` and LAN `192.168.99.1`.
+- static routes for routed LAN VLAN networks `192.168.10.0/24`, `192.168.20.0/24`, `192.168.30.0/24`, and `192.168.40.0/24` through gateway `172.16.0.2`.
+- outbound NAT behavior for routed LAN VLAN sources.
+- WAN failover gateway/routing entries using `203.0.113.5` and `198.51.100.9`.
+- EDGE-R1 interfaces `203.0.113.2`, `203.0.113.5`, `172.16.255.1`, and `203.0.113.9`.
+- EDGE-R2 interfaces `198.51.100.2`, `198.51.100.5`, `172.16.255.2`, and `198.51.100.9`.
+
+<details>
+<summary>Firewall screenshots selected for GitHub</summary>
+
+![FW1 pfSense interface map](images/pfsense-fw1-interface-map.png)
+
+![FW2 pfSense interface map](images/pfsense-fw2-interface-map.png)
+
+![pfSense WAN gateways](images/pfsense-wan-gateways.png)
+
+![pfSense network aliases](images/pfsense-network-aliases.png)
+
+![pfSense service and port aliases](images/pfsense-service-port-aliases.png)
+
+![pfSense SNMP monitoring rules](images/pfsense-snmp-monitoring-rules.png)
+
+![pfSense DNS server settings](images/pfsense-dns-server-settings.png)
+
+![pfSense DNS lookup validation](images/pfsense-dns-lookup-validation.png)
+
+</details>
+
+<details>
+<summary>Additional routing and WAN/LAN screenshots</summary>
+
+![pfSense WAN/LAN interface status](images/pfsense-wan-lan-interface-status.png)
+
+![pfSense static routes for LAN VLAN networks](images/pfsense-static-routes-lan-vlans.png)
+
+![pfSense outbound NAT mode](images/pfsense-outbound-nat-mode.png)
+
+![pfSense outbound NAT mappings](images/pfsense-outbound-nat-mappings.png)
+
+![pfSense WAN failover gateway routing](images/pfsense-wan-failover-gateway-routing.png)
+
+![EDGE-R1 interface brief](images/edge-r1-interface-brief.png)
+
+![EDGE-R2 interface brief](images/edge-r2-interface-brief.png)
+
+</details>
 
 ## VLAN Plan
 
@@ -85,6 +168,7 @@ Generated Cisco configurations include:
 | `router_configs.py` | Static router configurations for ISP and edge routers. |
 | `server_inventory.py` | Ubuntu server inventory, hostnames, IPs, gateways, and prefixes. |
 | `server_console.py` | Telnet console helper for Ubuntu-based nodes. |
+| `images/` | Selected topology and pfSense screenshots for GitHub README documentation. |
 | `01_create_project.py` | Creates a new GNS3 project through the API. |
 | `02_list_templates.py` | Lists available GNS3 templates. |
 | `03_create_nodes.py` | Creates all nodes from `topology_data.py`. |
@@ -130,18 +214,6 @@ Install the Python dependency:
 pip install netmiko
 ```
 
-## Important Before Publishing
-
-Before pushing this repository to GitHub:
-
-1. Replace all lab-specific values in `network_services.py`.
-2. Remove or rotate any real usernames, passwords, SNMP secrets, Active Directory passwords, and GNS3 server addresses.
-3. Consider moving secrets to environment variables or a local ignored configuration file.
-4. Add a `.gitignore` entry for generated backups, collected configs, logs, and local runtime files.
-5. Review helper scripts that contain hard-coded `SERVER_URL`, `PROJECT_ID`, or default console credentials.
-
-Do not publish real operational credentials or private GNS3 endpoint details.
-
 ## Recommended Run Order
 
 Review and update `network_services.py` before running the automation.
@@ -184,20 +256,6 @@ python 27b_verify_dhcp_servers.py
 python 28_test_dhcp_clients.py
 ```
 
-## Manual pfSense Work
-
-The pfSense firewall nodes are included in the topology, but this repository does not currently automate full pfSense HA, VLAN gateway, CARP, DHCP relay, firewall policy, or NAT configuration.
-
-Before expecting end-to-end DHCP, routing, DNS, or Internet reachability, configure the firewall layer manually or add pfSense automation for:
-
-- WAN interfaces toward the edge routers
-- internal VLAN interfaces and gateway IPs
-- DMZ interfaces
-- high availability/sync links
-- firewall rules between zones
-- NAT and outbound Internet access
-- DHCP relay or helper behavior where required
-
 ## Validation
 
 The repository includes validation helpers for both generated configuration and runtime services:
@@ -209,26 +267,6 @@ The repository includes validation helpers for both generated configuration and 
 
 The Python files in this snapshot compile successfully with `py_compile`.
 
-## Limitations
-
-- There is no `requirements.txt` yet.
-- Lab settings and secrets are currently stored as Python constants.
-- pfSense configuration is not automated in this snapshot.
-- Some helper scripts contain duplicated local GNS3 settings and should be centralized before public release.
-- Scripts assume specific GNS3 template names and interface naming.
-- Ubuntu console automation assumes known console credentials and passwordless `sudo`.
-
-## Suggested Next Improvements
-
-- Add `requirements.txt`.
-- Replace hard-coded secrets with environment variables.
-- Add `.gitignore` for generated outputs and config backups.
-- Add a topology diagram image for GitHub.
-- Add pfSense API or config automation.
-- Add per-stage rollback and idempotency notes.
-- Split local settings into `config.example.py` and ignored `config.local.py`.
-
 ## License
 
-No license file is included yet. Add a license before publishing if you want others to use, modify, or redistribute the project.
-
+This project is licensed under the MIT License. See the `LICENSE` file for details.
