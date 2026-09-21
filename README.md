@@ -67,7 +67,7 @@ Firewall rules shown in the lab include SNMP access from monitoring servers to p
 Additional firewall/router validation screenshots document:
 
 - pfSense WAN/LAN status with WAN `172.16.10.2` and LAN `192.168.99.1`.
-- static routes for routed LAN VLAN networks `192.168.10.0/24`, `192.168.20.0/24`, `192.168.30.0/24`, and `192.168.40.0/24` through gateway `172.16.0.2`.
+- static routes for routed LAN VLAN networks `192.168.10.0/24`, `192.168.20.0/24`, `192.168.30.0/24` and `192.168.40.0/24` through gateway `172.16.0.2`.
 - outbound NAT behavior for routed LAN VLAN sources.
 - WAN failover gateway/routing entries using `203.0.113.5` and `198.51.100.9`.
 - EDGE-R1 interfaces `203.0.113.2`, `203.0.113.5`, `172.16.255.1`, and `203.0.113.9`.
@@ -162,8 +162,8 @@ Generated Cisco configurations include:
 | File | Purpose |
 | --- | --- |
 | `gns3_client.py` | Shared helper for GNS3 REST API calls. |
-| `network_services.py` | Lab-wide settings such as GNS3 URL, project ID, credentials, domain, NTP, syslog, and SNMP values. |
-| `topology_data.py` | GNS3 node definitions, template names, coordinates, and link map. |
+| `network_services.py` | Lab-wide settings such as GNS3 URL, project ID, credentials, domain, NTP, syslog and SNMP values. |
+| `topology_data.py` | GNS3 node definitions, template names, coordinates and link map. |
 | `device_configs.py` | Generated Cisco switch configuration data and builders. |
 | `router_configs.py` | Static router configurations for ISP and edge routers. |
 | `server_inventory.py` | Ubuntu server inventory, hostnames, IPs, gateways, and prefixes. |
@@ -192,7 +192,7 @@ Generated Cisco configurations include:
 | `26b_verify_ntp_servers.py` | Verifies NTP services. |
 | `27_configure_dhcp_servers.py` | Installs and configures primary/secondary ISC DHCP servers. |
 | `27b_verify_dhcp_servers.py` | Verifies DHCP services. |
-| `28_test_dhcp_clients.py` / `28b_verify_dhcp_clients_only.py` | Tests DHCP client addressing, gateway, and DNS behavior. |
+| `28_test_dhcp_clients.py` / `28b_verify_dhcp_clients_only.py` | Tests DHCP client addressing, gateway and DNS behavior. |
 
 ## Prerequisites
 
@@ -262,7 +262,7 @@ The repository includes validation helpers for both generated configuration and 
 
 - `09_validate_generated_configs.py` checks for SSH-only management, HTTP service disablement, logging, NTP, DHCP snooping, DAI and SNMP placeholder values.
 - `10_preview_switch_security.py` prints selected switch hardening commands.
-- `24b_verify_ad_dc1_dns.py`, `26b_verify_ntp_servers.py`, and `27b_verify_dhcp_servers.py` verify major service roles.
+- `24b_verify_ad_dc1_dns.py`, `26b_verify_ntp_servers.py` and `27b_verify_dhcp_servers.py` verify major service roles.
 - `28_test_dhcp_clients.py` validates client IP addressing, default gateways, DNS settings and basic gateway reachability.
 
 The Python files in this snapshot compile successfully with `py_compile`.
