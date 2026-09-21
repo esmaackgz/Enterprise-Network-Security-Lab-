@@ -1,19 +1,19 @@
 # Enterprise Network Security Lab
 
-Automated enterprise network security lab built for GNS3. The project uses Python scripts to create a multi-zone network topology, deploy GNS3 nodes and links, generate Cisco IOS/IOSvL2 configurations, configure Ubuntu-based infrastructure services, and run validation checks.
+Automated enterprise network security lab built for GNS3. The project uses Python scripts to create a multi-zone network topology, deploy GNS3 nodes and links, generate Cisco IOS/IOSvL2 configurations, configure Ubuntu-based infrastructure services and run validation checks.
 
 ## Project Highlights
 
 - End-to-end GNS3 lab build with Python-based topology automation.
-- Enterprise-style segmentation with user, server, voice, printer, guest, DMZ, management, monitoring, backup, identity, security, load balancer, database, and authentication/NTP VLANs.
-- Redundant edge and core design with dual ISP routers, dual edge routers, dual pfSense firewalls, dual core switches, and EtherChannel links.
-- Cisco IOS/IOSvL2 configuration generation for switch hardening, trunking, STP, DHCP snooping, Dynamic ARP Inspection, port security, SNMPv3, syslog, NTP, and SSH-only management.
-- Ubuntu service automation for static networking, BIND9 DNS, Samba Active Directory domain controllers, Chrony NTP, ISC DHCP, and validation tests.
-- pfSense lab documentation for interface mapping, WAN gateways, network aliases, service aliases, monitoring rules, and DNS validation.
+- Enterprise-style segmentation with user, server, voice, printer, guest, DMZ, management, monitoring, backup, identity, security, load balancer, database and authentication/NTP VLANs.
+- Redundant edge and core design with dual ISP routers, dual edge routers, dual pfSense firewalls, dual core switches and EtherChannel links.
+- Cisco IOS/IOSvL2 configuration generation for switch hardening, trunking, STP, DHCP snooping, Dynamic ARP Inspection, port security, SNMPv3, syslog, NTP and SSH-only management.
+- Ubuntu service automation for static networking, BIND9 DNS, Samba Active Directory domain controllers, Chrony NTP, ISC DHCP and validation tests.
+- pfSense lab documentation for interface mapping, WAN gateways, network aliases, service aliases, monitoring rules and DNS validation.
 
 ## Overview
 
-The lab models a small enterprise environment with redundant WAN edges, dual firewalls, a core/access/server switching layer, DMZ services, management services, monitoring, logging, IDS components, and segmented client networks.
+The lab models a small enterprise environment with redundant WAN edges, dual firewalls, a core/access/server switching layer, DMZ services, management services, monitoring, logging, IDS components and segmented client networks.
 
 ![Enterprise Network Security Lab GNS3 topology](images/enterprise-lab-gns3-topology.png)
 
@@ -32,12 +32,12 @@ Current topology data includes:
 Main network areas:
 
 - **WAN and Edge:** ISP1, ISP2, EDGE-R1, EDGE-R2 with redundant upstream paths.
-- **Firewall Layer:** FW1 and FW2 pfSense nodes connected to edge, core, HA, and DMZ segments.
+- **Firewall Layer:** FW1 and FW2 pfSense nodes connected to edge, core, HA and DMZ segments.
 - **Core Layer:** CORE-SW1 and CORE-SW2 with EtherChannel between the core switches.
-- **Access Layer:** user, voice, printer, IoT camera, and guest endpoint VLANs.
-- **Server Layer:** application, database, identity, DHCP, DNS, authentication, NTP, monitoring, and security services.
-- **DMZ:** public web, WAF/load balancer, public DNS, and VPN gateway nodes.
-- **Management:** NetBox, jumpbox, config backup, backup, admin, and helpdesk systems.
+- **Access Layer:** user, voice, printer, IoT camera and guest endpoint VLANs.
+- **Server Layer:** application, database, identity, DHCP, DNS, authentication, NTP, monitoring and security services.
+- **DMZ:** public web, WAF/load balancer, public DNS and VPN gateway nodes.
+- **Management:** NetBox, jumpbox, config backup, backup, admin and helpdesk systems.
 
 ## Firewall Lab Data
 
@@ -58,11 +58,11 @@ The pfSense screenshots in `images/` document the firewall state used in the lab
 | FW2 | DMZ_TRUNK | em3 | VLAN trunk |
 | FW2 | WAN2_EDGE_R1 | em4 | 172.16.11.2/30 |
 
-Firewall object data includes network aliases for the 10.10.x enterprise VLAN plan, including user, voice, printer, IoT camera, guest, management, monitoring, backup, DMZ, identity, security/IDS, load balancer, database, admin, and authentication/NTP networks.
+Firewall object data includes network aliases for the 10.10.x enterprise VLAN plan, including user, voice, printer, IoT camera, guest, management, monitoring, backup, DMZ, identity, security/IDS, load balancer, database, admin and authentication/NTP networks.
 
-Service aliases cover common enterprise/security ports, including DNS, DHCP, NTP, SSH, RDP, web, database, syslog, NetFlow, RADIUS, TACACS, Prometheus, Grafana, Zabbix, Wazuh, Graylog, and backup traffic.
+Service aliases cover common enterprise/security ports, including DNS, DHCP, NTP, SSH, RDP, web, database, syslog, NetFlow, RADIUS, TACACS, Prometheus, Grafana, Zabbix, Wazuh, Graylog and backup traffic.
 
-Firewall rules shown in the lab include SNMP access from monitoring servers to pfSense, and DNS validation confirms resolver access for external package repositories.
+Firewall rules shown in the lab include SNMP access from monitoring servers to pfSense and DNS validation confirms resolver access for external package repositories.
 
 Additional firewall/router validation screenshots document:
 
@@ -260,10 +260,10 @@ python 28_test_dhcp_clients.py
 
 The repository includes validation helpers for both generated configuration and runtime services:
 
-- `09_validate_generated_configs.py` checks for SSH-only management, HTTP service disablement, logging, NTP, DHCP snooping, DAI, and SNMP placeholder values.
+- `09_validate_generated_configs.py` checks for SSH-only management, HTTP service disablement, logging, NTP, DHCP snooping, DAI and SNMP placeholder values.
 - `10_preview_switch_security.py` prints selected switch hardening commands.
 - `24b_verify_ad_dc1_dns.py`, `26b_verify_ntp_servers.py`, and `27b_verify_dhcp_servers.py` verify major service roles.
-- `28_test_dhcp_clients.py` validates client IP addressing, default gateways, DNS settings, and basic gateway reachability.
+- `28_test_dhcp_clients.py` validates client IP addressing, default gateways, DNS settings and basic gateway reachability.
 
 The Python files in this snapshot compile successfully with `py_compile`.
 
